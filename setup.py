@@ -13,6 +13,10 @@ if importlib.util.find_spec("torch") is not None:
 
         from torch.utils.cpp_extension import BuildExtension, CUDAExtension
 
+        cuda_version = float(torch.version.cuda)
+
+        print(f"Building with CUDA support for CUDA: {cuda_version}")
+
         nvcc_args = [
             "-gencode=arch=compute_50,code=sm_50",
             "-gencode=arch=compute_60,code=sm_60",
@@ -23,7 +27,6 @@ if importlib.util.find_spec("torch") is not None:
             "-use_fast_math",
         ]
 
-        cuda_version = float(torch.version.cuda)
         if cuda_version >= 10:
             nvcc_args.append("-gencode=arch=compute_75,code=sm_75")
         if cuda_version >= 11:
